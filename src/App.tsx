@@ -9,35 +9,24 @@ import { PostsList } from './components/PostsList';
 import { PostDetails } from './components/PostDetails';
 import { UserSelector } from './components/UserSelector';
 import { Loader } from './components/Loader';
-import { getUserPosts } from './api/posts';
 import { Post } from './types/Post';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { loadUsers } from './features/users';
 import * as authorActions from './features/author';
+import * as userPostsActions from './features/userPosts';
 import { User } from './types/User';
+import { loadPosts } from './features/userPosts';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const author = useAppSelector(state => state.author);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loaded, setLoaded] = useState(false);
-  const [hasError, setError] = useState(false);
+  const { posts, loaded, hasError } = useAppSelector(state => state.userPosts);
 
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
 
   const handleSetAuthor = (selectedAuthor: User) => {
     dispatch(authorActions.set(selectedAuthor));
   };
-
-  function loadUserPosts(userId: number) {
-    setLoaded(false);
-
-    getUserPosts(userId)
-      .then(setPosts)
-      .catch(() => setError(true))
-      // We disable the spinner in any case
-      .finally(() => setLoaded(true));
-  }
 
   useEffect(() => {
     dispatch(loadUsers());
@@ -49,11 +38,11 @@ export const App: React.FC = () => {
     setSelectedPost(null);
 
     if (author) {
-      loadUserPosts(author.id);
+      dispatch(loadPosts(author.id));
     } else {
-      setPosts([]);
+      dispatch(userPostsActions.set([]));
     }
-  }, [author]);
+  }, [author, dispatch]);
 
   return (
     <main className="section">

@@ -6,9 +6,10 @@ import {
 } from '@reduxjs/toolkit';
 import { usersSlice } from '../features/users';
 import { authorSlice } from '../features/author';
+import { userPostsSlice } from '../features/userPosts';
 // eslint-disable-next-line import/no-cycle
 
-const rootReducer = combineSlices(usersSlice, authorSlice);
+const rootReducer = combineSlices(usersSlice, authorSlice, userPostsSlice);
 
 export const store = configureStore({
   reducer: rootReducer,
