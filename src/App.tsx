@@ -12,8 +12,11 @@ import { Loader } from './components/Loader';
 import { getUserPosts } from './api/posts';
 import { User } from './types/User';
 import { Post } from './types/Post';
+import { useAppDispatch } from './app/hooks';
+import { loadUsers } from './features/users';
 
 export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [hasError, setError] = useState(false);
@@ -30,6 +33,10 @@ export const App: React.FC = () => {
       // We disable the spinner in any case
       .finally(() => setLoaded(true));
   }
+
+  useEffect(() => {
+    dispatch(loadUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     // we clear the post when an author is changed
