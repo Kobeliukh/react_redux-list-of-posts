@@ -4,13 +4,13 @@ import { Post } from '../types/Post';
 import { getUserPosts } from '../api/posts';
 
 export interface UserPostsState {
-  posts: Post[];
+  items: Post[];
   loaded: boolean;
   hasError: boolean;
 }
 
 const initialState: UserPostsState = {
-  posts: [],
+  items: [],
   loaded: false,
   hasError: false,
 };
@@ -27,7 +27,7 @@ export const userPostsSlice = createSlice({
   initialState,
   reducers: {
     set: (state, action: PayloadAction<Post[]>) => {
-      state.posts = action.payload;
+      state.items = action.payload;
     },
   },
   extraReducers: builder => {
@@ -35,7 +35,7 @@ export const userPostsSlice = createSlice({
       state.loaded = false;
     });
     builder.addCase(loadPosts.fulfilled, (state, action) => {
-      state.posts = action.payload;
+      state.items = action.payload;
       state.loaded = true;
     });
     builder.addCase(loadPosts.rejected, state => {
