@@ -7,9 +7,15 @@ import {
 import { usersSlice } from '../features/users';
 import { authorSlice } from '../features/author';
 import { userPostsSlice } from '../features/userPosts';
+import { selectedPostSlice } from '../features/selectedPost';
 // eslint-disable-next-line import/no-cycle
 
-const rootReducer = combineSlices(usersSlice, authorSlice, userPostsSlice);
+const rootReducer = combineSlices(
+  usersSlice,
+  authorSlice,
+  userPostsSlice,
+  selectedPostSlice,
+);
 
 export const store = configureStore({
   reducer: rootReducer,
